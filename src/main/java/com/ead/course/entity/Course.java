@@ -16,12 +16,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -63,6 +66,10 @@ public class Course implements Serializable {
 
     @Column(nullable = false)
     private UUID courseInstructor;
+
+    @OneToMany(mappedBy = "course")
+    @ToString.Exclude
+    private final Set<Module> modules = new HashSet<>();
 
     @PrePersist
     public void prePersist() {
