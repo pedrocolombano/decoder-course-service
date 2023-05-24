@@ -1,0 +1,73 @@
+package com.ead.course.controller;
+
+import com.ead.course.dto.request.CourseInsertDTO;
+import com.ead.course.dto.response.CourseDTO;
+import com.ead.course.entity.Course;
+import com.ead.course.mapper.CourseMapper;
+import com.ead.course.service.CourseService;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/courses")
+@AllArgsConstructor
+public class CourseController {
+
+    private final CourseService courseService;
+    private final CourseMapper courseMapper;
+
+    @GetMapping
+    public ResponseEntity<Page<CourseDTO>> findAll(Pageable pageable) {
+        final Page<CourseDTO> courses = courseService.findAll(pageable)
+                .map(courseMapper::fromEntity);
+
+        return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("/{courseId}")
+    public ResponseEntity<CourseDTO> findById(@PathVariable UUID courseId) {
+        final Course course = courseService.findById(courseId);
+        return ResponseEntity.ok(courseMapper.fromEntity(course));
+    }
+
+    @PostMapping
+    public ResponseEntity<CourseDTO> insert(@RequestBody @Valid CourseInsertDTO courseInsertDTO) {
+        final Course createdCourse = courseService.insert(courseInsertDTO);
+        final CourseDTO response = courseMapper.fromEntity(createdCourse);
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{courseId}")
+                .buildAndExpand(response.getCourseId())
+                .toUri();
+        return ResponseEntity.created(uri).body(response);
+    }
+
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<Void> deleteById(@PathVariable UUID courseId) {
+        courseService.delete(courseId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{courseId}")
+    public ResponseEntity<CourseDTO> update(@PathVariable UUID courseId,
+                                            @RequestBody @Valid CourseInsertDTO courseInsertDTO) {
+        final Course updatedCourse = courseService.update(courseId, courseInsertDTO);
+        return ResponseEntity.ok(courseMapper.fromEntity(updatedCourse));
+    }
+
+}
