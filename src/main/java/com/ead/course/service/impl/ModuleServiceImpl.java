@@ -1,12 +1,17 @@
 package com.ead.course.service.impl;
 
+import com.ead.course.dto.request.ModuleInsertDTO;
+import com.ead.course.entity.Course;
 import com.ead.course.entity.Lesson;
 import com.ead.course.entity.Module;
 import com.ead.course.exception.ResourceNotFoundException;
+import com.ead.course.mapper.ModuleMapper;
 import com.ead.course.repository.ModuleRepository;
+import com.ead.course.service.CourseService;
 import com.ead.course.service.LessonService;
 import com.ead.course.service.ModuleService;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +23,11 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ModuleServiceImpl implements ModuleService {
 
+    @Lazy
+    private final CourseService courseService;
+
     private final LessonService lessonService;
+    private final ModuleMapper moduleMapper;
     private final ModuleRepository moduleRepository;
 
     @Override
@@ -49,6 +58,15 @@ public class ModuleServiceImpl implements ModuleService {
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Module not found.");
         }
+    }
+
+    @Override
+    public Module insert(final UUID courseId, final ModuleInsertDTO moduleInsertDTO) {
+        final Course course = courseService.findById(courseId);
+        final Module moduleToInsert = moduleMapper.fromModuleInsertDto(moduleInsertDTO);
+        moduleToInsert.setCourse(course);
+
+        return moduleRepository.save(moduleToInsert);
     }
 
 }

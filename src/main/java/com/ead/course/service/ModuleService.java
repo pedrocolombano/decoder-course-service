@@ -1,5 +1,6 @@
 package com.ead.course.service;
 
+import com.ead.course.dto.request.ModuleInsertDTO;
 import com.ead.course.entity.Module;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface ModuleService {
     List<Module> findAllByCourseId(UUID courseId);
     void deleteAll(List<Module> modules);
     void deleteById(UUID moduleId);
-
+    Module insert(UUID courseId, ModuleInsertDTO moduleInsertDTO);
 }
