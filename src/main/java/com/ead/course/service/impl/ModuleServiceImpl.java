@@ -61,12 +61,20 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
+    @Transactional
     public Module insert(final UUID courseId, final ModuleInsertDTO moduleInsertDTO) {
         final Course course = courseService.findById(courseId);
         final Module moduleToInsert = moduleMapper.fromModuleInsertDto(moduleInsertDTO);
         moduleToInsert.setCourse(course);
 
         return moduleRepository.save(moduleToInsert);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAllByCourseId(final UUID courseId) {
+        final List<Module> modules = moduleRepository.findAllByCourseId(courseId);
+        deleteAll(modules);
     }
 
 }

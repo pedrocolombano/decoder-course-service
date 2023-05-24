@@ -34,4 +34,16 @@ public class ModuleController {
         return ResponseEntity.created(uri).body(response);
     }
 
+    @DeleteMapping("/{moduleId}")
+    public ResponseEntity<Void> deleteById(@PathVariable UUID moduleId) {
+        moduleService.deleteById(moduleId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/courses/{courseId}")
+    public ResponseEntity<Void> deleteAllByCourseId(@PathVariable UUID courseId) {
+        moduleService.deleteAllByCourseId(courseId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
