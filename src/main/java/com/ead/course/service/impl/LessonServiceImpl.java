@@ -51,9 +51,23 @@ public class LessonServiceImpl implements LessonService {
     @Override
     @Transactional
     public void deleteByIdAndModuleId(final UUID lessonId, final UUID moduleId) {
-        final Lesson lesson = lessonRepository.findByLessonIdAndModuleModuleId(lessonId, moduleId)
-                .orElseThrow(() -> new ResourceNotFoundException("Lesson not found."));
+        final Lesson lesson = findByLessonIdAndModuleId(lessonId, moduleId);
         lessonRepository.delete(lesson);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Lesson findByLessonIdAndModuleId(final UUID lessonId, final UUID moduleId) {
+        return lessonRepository.findByLessonIdAndModuleModuleId(lessonId, moduleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Lesson not found."));
+    }
+
+    @Override
+    @Transactional
+    public Lesson update(final UUID lessonId, final UUID moduleId, final LessonInsertDTO lessonDto) {
+        final Lesson entity = findByLessonIdAndModuleId(lessonId, moduleId);
+        lessonMapper.map(lessonDto, entity);
+        return lessonRepository.save(entity);
     }
 
 

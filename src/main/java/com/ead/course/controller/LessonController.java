@@ -41,4 +41,12 @@ public class LessonController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{lessonId}/modules/{moduleId}")
+    public ResponseEntity<LessonDTO> update(@PathVariable UUID lessonId,
+                                            @PathVariable UUID moduleId,
+                                            @RequestBody LessonInsertDTO lessonDto) {
+        final Lesson updatedLesson = lessonService.update(lessonId, moduleId, lessonDto);
+        return ResponseEntity.ok(lessonMapper.fromEntity(updatedLesson));
+    }
+
 }

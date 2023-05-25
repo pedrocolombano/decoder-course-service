@@ -12,5 +12,7 @@ public interface LessonService {
     void deleteAll(List<Lesson> lessons);
     Lesson insert(UUID moduleId, LessonInsertDTO lessonInsertDTO);
     void deleteByIdAndModuleId(UUID lessonId, UUID moduleId);
+    Lesson findByLessonIdAndModuleId(UUID lessonId, UUID moduleId);
+    Lesson update(UUID lessonId, UUID moduleId, LessonInsertDTO lessonDto);
 
 }

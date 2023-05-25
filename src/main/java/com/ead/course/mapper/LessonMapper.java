@@ -21,4 +21,7 @@ public class LessonMapper {
         return mapper.map(entity, LessonDTO.class);
     }
 
+    public void map(final LessonInsertDTO lessonDto, final Lesson entity) {
+        mapper.map(lessonDto, entity);
+    }
 }
