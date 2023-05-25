@@ -5,15 +5,19 @@ import com.ead.course.dto.response.ModuleDTO;
 import com.ead.course.entity.Module;
 import com.ead.course.mapper.ModuleMapper;
 import com.ead.course.service.ModuleService;
+import com.ead.course.specification.ModuleSpecificationTemplate;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/modules")
@@ -24,11 +28,13 @@ public class ModuleController {
     private final ModuleMapper moduleMapper;
 
     @GetMapping("/courses/{courseId}")
-    public ResponseEntity<List<ModuleDTO>> findAllByCourse(@PathVariable UUID courseId) {
-        final List<ModuleDTO> modules = moduleService.findAllByCourseId(courseId)
-                .stream()
-                .map(moduleMapper::fromEntity)
-                .collect(Collectors.toList());
+    public ResponseEntity<Page<ModuleDTO>> findAllByCourse(@PathVariable UUID courseId,
+                                                           ModuleSpecificationTemplate.ModuleSpecification specification,
+                                                           @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        final Specification<Module> moduleSpecification = ModuleSpecificationTemplate.moduleByCourseId(courseId)
+                .and(specification);
+        final Page<ModuleDTO> modules = moduleService.findAllByCourseId(moduleSpecification, pageable)
+                .map(moduleMapper::fromEntity);
         return ResponseEntity.ok(modules);
     }
 

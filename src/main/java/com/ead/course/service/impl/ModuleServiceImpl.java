@@ -12,6 +12,9 @@ import com.ead.course.service.LessonService;
 import com.ead.course.service.ModuleService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +32,13 @@ public class ModuleServiceImpl implements ModuleService {
     private final LessonService lessonService;
     private final ModuleMapper moduleMapper;
     private final ModuleRepository moduleRepository;
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Module> findAllByCourseId(final Specification<Module> moduleSpecification,
+                                          final Pageable pageable) {
+        return moduleRepository.findAll(moduleSpecification, pageable);
+    }
 
     @Override
     @Transactional(readOnly = true)
