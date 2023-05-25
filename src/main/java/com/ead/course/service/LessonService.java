@@ -11,5 +11,6 @@ public interface LessonService {
     List<Lesson> findAllByModuleId(UUID moduleId);
     void deleteAll(List<Lesson> lessons);
     Lesson insert(UUID moduleId, LessonInsertDTO lessonInsertDTO);
+    void deleteByIdAndModuleId(UUID lessonId, UUID moduleId);
 
 }

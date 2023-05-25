@@ -3,6 +3,7 @@ package com.ead.course.service.impl;
 import com.ead.course.dto.request.LessonInsertDTO;
 import com.ead.course.entity.Lesson;
 import com.ead.course.entity.Module;
+import com.ead.course.exception.ResourceNotFoundException;
 import com.ead.course.mapper.LessonMapper;
 import com.ead.course.repository.LessonRepository;
 import com.ead.course.service.LessonService;
@@ -45,6 +46,14 @@ public class LessonServiceImpl implements LessonService {
         newLesson.setModule(module);
 
         return lessonRepository.save(newLesson);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByIdAndModuleId(final UUID lessonId, final UUID moduleId) {
+        final Lesson lesson = lessonRepository.findByLessonIdAndModuleModuleId(lessonId, moduleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Lesson not found."));
+        lessonRepository.delete(lesson);
     }
 
 

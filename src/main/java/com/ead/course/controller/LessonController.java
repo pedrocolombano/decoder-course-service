@@ -34,4 +34,11 @@ public class LessonController {
         return ResponseEntity.created(uri).body(response);
     }
 
+    @DeleteMapping("/{lessonId}/modules/{moduleId}")
+    public ResponseEntity<Void> deleteByIdAndModuleId(@PathVariable UUID lessonId,
+                                                      @PathVariable UUID moduleId) {
+        lessonService.deleteByIdAndModuleId(lessonId, moduleId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
