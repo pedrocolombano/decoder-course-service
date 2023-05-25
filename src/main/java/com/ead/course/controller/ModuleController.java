@@ -46,4 +46,12 @@ public class ModuleController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{moduleId}/courses/{courseId}")
+    public ResponseEntity<ModuleDTO> update(@PathVariable UUID moduleId,
+                                            @PathVariable UUID courseId,
+                                            @RequestBody ModuleInsertDTO moduleInsertDTO) {
+        final Module updatedModule = moduleService.update(moduleId, courseId, moduleInsertDTO);
+        return ResponseEntity.ok(moduleMapper.fromEntity(updatedModule));
+    }
+
 }

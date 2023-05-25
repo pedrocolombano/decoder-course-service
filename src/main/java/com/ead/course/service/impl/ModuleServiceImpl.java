@@ -77,4 +77,13 @@ public class ModuleServiceImpl implements ModuleService {
         deleteAll(modules);
     }
 
+    @Override
+    @Transactional
+    public Module update(final UUID moduleId, final UUID courseId, final ModuleInsertDTO moduleInsertDTO) {
+        final Module module = moduleRepository.findByModuleIdAndCourseId(moduleId, courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Module not found."));
+        moduleMapper.map(moduleInsertDTO, module);
+        return moduleRepository.save(module);
+    }
+
 }

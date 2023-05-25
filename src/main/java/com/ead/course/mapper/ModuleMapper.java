@@ -21,4 +21,7 @@ public class ModuleMapper {
         return mapper.map(module, ModuleDTO.class);
     }
 
+    public void map(final ModuleInsertDTO source, Module destination) {
+        mapper.map(source, destination);
+    }
 }
