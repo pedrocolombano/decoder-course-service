@@ -30,7 +30,7 @@ public class ModuleController {
     @GetMapping("/courses/{courseId}")
     public ResponseEntity<Page<ModuleDTO>> findAllByCourse(@PathVariable UUID courseId,
                                                            ModuleSpecificationTemplate.ModuleSpecification specification,
-                                                           @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+                                                           @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable) {
         final Specification<Module> moduleSpecification = ModuleSpecificationTemplate.moduleByCourseId(courseId)
                 .and(specification);
         final Page<ModuleDTO> modules = moduleService.findAllByCourseId(moduleSpecification, pageable)
