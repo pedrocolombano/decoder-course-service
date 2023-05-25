@@ -32,6 +32,13 @@ public class LessonController {
         return ResponseEntity.ok(lessons);
     }
 
+    @GetMapping("/{lessonId}/modules/{moduleId}")
+    public ResponseEntity<LessonDTO> findByIdAndModuleId(@PathVariable UUID lessonId,
+                                                         @PathVariable UUID moduleId) {
+        final Lesson lesson = lessonService.findByLessonIdAndModuleId(lessonId, moduleId);
+        return ResponseEntity.ok(lessonMapper.fromEntity(lesson));
+    }
+
     @PostMapping("/modules/{moduleId}")
     public ResponseEntity<LessonDTO> insert(@PathVariable UUID moduleId,
                                             @RequestBody LessonInsertDTO lessonInsertDTO) {
