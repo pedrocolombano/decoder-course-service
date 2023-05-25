@@ -5,18 +5,14 @@ import com.ead.course.dto.response.CourseDTO;
 import com.ead.course.entity.Course;
 import com.ead.course.mapper.CourseMapper;
 import com.ead.course.service.CourseService;
+import com.ead.course.specification.CourseSpecificationTemplate;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -32,8 +28,9 @@ public class CourseController {
     private final CourseMapper courseMapper;
 
     @GetMapping
-    public ResponseEntity<Page<CourseDTO>> findAll(Pageable pageable) {
-        final Page<CourseDTO> courses = courseService.findAll(pageable)
+    public ResponseEntity<Page<CourseDTO>> findAll(CourseSpecificationTemplate.CourseSpecification specification,
+                                                   @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        final Page<CourseDTO> courses = courseService.findAll(specification, pageable)
                 .map(courseMapper::fromEntity);
 
         return ResponseEntity.ok(courses);

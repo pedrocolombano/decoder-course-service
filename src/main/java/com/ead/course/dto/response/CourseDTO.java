@@ -2,6 +2,7 @@ package com.ead.course.dto.response;
 
 import com.ead.course.entity.enumerated.CourseLevel;
 import com.ead.course.entity.enumerated.CourseStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,13 @@ public class CourseDTO implements Serializable {
     private String name;
     private String description;
     private String imageUrl;
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
+
     private CourseStatus courseStatus;
     private CourseLevel courseLevel;
     private UUID courseInstructor;

@@ -8,6 +8,7 @@ import com.ead.course.mapper.CourseMapper;
 import com.ead.course.repository.CourseRepository;
 import com.ead.course.service.CourseService;
 import com.ead.course.service.ModuleService;
+import com.ead.course.specification.CourseSpecificationTemplate;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -29,11 +30,14 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
 
     @Override
-    public Page<Course> findAll(final Pageable pageable) {
-        return courseRepository.findAll(pageable);
+    @Transactional(readOnly = true)
+    public Page<Course> findAll(final CourseSpecificationTemplate.CourseSpecification specification,
+                                final Pageable pageable) {
+        return courseRepository.findAll(specification, pageable);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Course findById(final UUID courseId) {
         return courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found."));
