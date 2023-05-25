@@ -91,4 +91,11 @@ public class ModuleServiceImpl implements ModuleService {
         return moduleRepository.findByModuleIdAndCourseId(moduleId, courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Module not found."));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Module findById(final UUID moduleId) {
+        return moduleRepository.findById(moduleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Module not found."));
+    }
 }

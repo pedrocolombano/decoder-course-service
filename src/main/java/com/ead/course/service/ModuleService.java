@@ -15,5 +15,6 @@ public interface ModuleService {
     void deleteAllByCourseId(UUID courseId);
     Module update(UUID moduleId, UUID courseId, ModuleInsertDTO moduleInsertDTO);
     Module findByModuleIdAndCourseId(UUID moduleId, UUID courseId);
+    Module findById(UUID moduleId);
 
 }
