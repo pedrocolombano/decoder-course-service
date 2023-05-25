@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/modules")
@@ -20,6 +22,22 @@ public class ModuleController {
 
     private final ModuleService moduleService;
     private final ModuleMapper moduleMapper;
+
+    @GetMapping("/courses/{courseId}")
+    public ResponseEntity<List<ModuleDTO>> findAllByCourse(@PathVariable UUID courseId) {
+        final List<ModuleDTO> modules = moduleService.findAllByCourseId(courseId)
+                .stream()
+                .map(moduleMapper::fromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(modules);
+    }
+
+    @GetMapping("/{moduleId}/courses/{courseId}")
+    public ResponseEntity<ModuleDTO> findById(@PathVariable UUID moduleId,
+                                              @PathVariable UUID courseId) {
+        final Module module = moduleService.findByModuleIdAndCourseId(moduleId, courseId);
+        return ResponseEntity.ok(moduleMapper.fromEntity(module));
+    }
 
     @PostMapping("/courses/{courseId}")
     public ResponseEntity<ModuleDTO> insert(@PathVariable UUID courseId,
