@@ -13,11 +13,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -31,8 +33,11 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Course> findAll(final CourseSpecificationTemplate.CourseSpecification specification,
-                                final Pageable pageable) {
+    public Page<Course> findAll(final UUID userId, final CourseSpecificationTemplate.CourseSpecification specification, final Pageable pageable) {
+        if (Objects.nonNull(userId)) {
+            final Specification<Course> coursesByUserSpecification = CourseSpecificationTemplate.coursesByUser(userId).and(specification);
+            return courseRepository.findAll(coursesByUserSpecification, pageable);
+        }
         return courseRepository.findAll(specification, pageable);
     }
 
