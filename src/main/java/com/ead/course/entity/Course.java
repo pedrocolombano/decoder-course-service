@@ -20,12 +20,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -37,7 +33,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class Course implements Serializable {
+public class Course extends GenericEntity implements Serializable {
 
     private static final long serialVersionUID = -2778793552214178453L;
 
@@ -54,12 +50,6 @@ public class Course implements Serializable {
     private String imageUrl;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CourseStatus courseStatus;
 
@@ -74,17 +64,6 @@ public class Course implements Serializable {
     @Fetch(FetchMode.SUBSELECT)
     @ToString.Exclude
     private final Set<Module> modules = new HashSet<>();
-
-    @PrePersist
-    public void prePersist() {
-        createdAt = LocalDateTime.now(ZoneId.of("UTC"));
-        updatedAt = LocalDateTime.now(ZoneId.of("UTC"));
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = LocalDateTime.now(ZoneId.of("UTC"));
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -17,12 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -34,7 +30,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class Module implements Serializable {
+public class Module extends GenericEntity implements Serializable {
 
     private static final long serialVersionUID = -2395791546670667876L;
 
@@ -48,12 +44,6 @@ public class Module implements Serializable {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     @ToString.Exclude
@@ -63,17 +53,6 @@ public class Module implements Serializable {
     @Fetch(FetchMode.SUBSELECT)
     @ToString.Exclude
     private final Set<Lesson> lessons = new HashSet<>();
-
-    @PrePersist
-    public void prePersist() {
-        createdAt = LocalDateTime.now(ZoneId.of("UTC"));
-        updatedAt = LocalDateTime.now(ZoneId.of("UTC"));
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = LocalDateTime.now(ZoneId.of("UTC"));
-    }
 
     @Override
     public boolean equals(Object o) {
