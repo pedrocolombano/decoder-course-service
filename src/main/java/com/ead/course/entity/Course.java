@@ -65,6 +65,10 @@ public class Course extends GenericEntity implements Serializable {
     @ToString.Exclude
     private final Set<Module> modules = new HashSet<>();
 
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private final Set<CourseUser> courseUsers = new HashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
