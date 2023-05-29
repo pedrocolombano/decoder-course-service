@@ -18,3 +18,8 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+ead:
+  user:
+    service:
+      host: 'http://localhost:8087'

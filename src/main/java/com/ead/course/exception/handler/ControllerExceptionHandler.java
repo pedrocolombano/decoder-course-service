@@ -1,5 +1,6 @@
 package com.ead.course.exception.handler;
 
+import com.ead.course.exception.ProxyException;
 import com.ead.course.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,13 @@ public class ControllerExceptionHandler {
                                                                 final HttpServletRequest request) {
         final HttpStatus notFoundStatus = HttpStatus.NOT_FOUND;
         return ResponseEntity.status(notFoundStatus).body(createResponseBody(notFoundStatus, exception, request));
+    }
+
+    @ExceptionHandler(ProxyException.class)
+    public ResponseEntity<StandardError> handleInvalidData(final ProxyException exception,
+                                                           final HttpServletRequest request) {
+        final HttpStatus badGatewayStatus = HttpStatus.BAD_GATEWAY;
+        return ResponseEntity.status(badGatewayStatus).body(createResponseBody(badGatewayStatus, exception, request));
     }
 
     private StandardError createResponseBody(final HttpStatus status,
