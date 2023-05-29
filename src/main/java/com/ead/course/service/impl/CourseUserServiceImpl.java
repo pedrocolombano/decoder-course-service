@@ -4,12 +4,14 @@ import com.ead.course.dto.request.CourseSubscriptionDTO;
 import com.ead.course.dto.response.UserDTO;
 import com.ead.course.entity.Course;
 import com.ead.course.entity.CourseUser;
+import com.ead.course.enumerated.UserStatus;
 import com.ead.course.proxy.UserProxy;
 import com.ead.course.repository.CourseUserRepository;
 import com.ead.course.service.CourseService;
 import com.ead.course.service.CourseUserService;
 import com.ead.course.service.InvalidSubscriptionException;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Log4j2
 public class CourseUserServiceImpl implements CourseUserService {
 
     private final UserProxy userProxy;
@@ -33,10 +36,14 @@ public class CourseUserServiceImpl implements CourseUserService {
 
     @Override
     @Transactional
-    //TODO: validate if user exists in AuthUser Service
     public CourseUser subscribeUserIntoCourse(final UUID courseId, final CourseSubscriptionDTO subscriptionDTO) {
+        log.info("Starting user {} subscription into course {}.", subscriptionDTO.getUserId(), courseId);
+
         final Course course = courseService.findById(courseId);
         validateIfUserIsAlreadySubscribedIntoCourse(course, subscriptionDTO);
+        validateUser(subscriptionDTO);
+
+        userProxy.subscribeUserIntoCourse(subscriptionDTO.getUserId(), courseId);
 
         final CourseUser userToSubscribe = buildCourseUser(course, subscriptionDTO.getUserId());
         return courseUserRepository.save(userToSubscribe);
@@ -45,7 +52,20 @@ public class CourseUserServiceImpl implements CourseUserService {
     private void validateIfUserIsAlreadySubscribedIntoCourse(final Course course, final CourseSubscriptionDTO subscriptionDTO) {
         boolean isUserAlreadySubscribed = courseUserRepository.existsByCourseAndUserId(course, subscriptionDTO.getUserId());
         if (isUserAlreadySubscribed) {
+            log.info("The user {} is already subscribed into the course {}.", subscriptionDTO.getUserId(), course.getName());
             throw new InvalidSubscriptionException("The user is already subscribed into this course.");
+        }
+    }
+
+    private void validateUser(final CourseSubscriptionDTO subscriptionDTO) {
+        final UserDTO user = userProxy.findById(subscriptionDTO.getUserId()).getBody();
+        validateIfUserIsNotBlocked(user);
+    }
+
+    private void validateIfUserIsNotBlocked(final UserDTO userDTO) {
+        if (UserStatus.BLOCKED.equals(userDTO.getUserStatus())) {
+            log.info("User {} is blocked and can't be subscribed.", userDTO.getUserId());
+            throw new InvalidSubscriptionException("The user is blocked and can't be subscribed into the course.");
         }
     }
 

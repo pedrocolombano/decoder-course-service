@@ -1,7 +1,7 @@
 package com.ead.course.controller;
 
 import com.ead.course.dto.request.CourseSubscriptionDTO;
-import com.ead.course.dto.response.SubscribedUserDTO;
+import com.ead.course.dto.SubscribedUserDTO;
 import com.ead.course.dto.response.UserDTO;
 import com.ead.course.entity.CourseUser;
 import com.ead.course.mapper.CourseUserMapper;

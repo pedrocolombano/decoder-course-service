@@ -1,4 +1,4 @@
-package com.ead.course.dto.response;
+package com.ead.course.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

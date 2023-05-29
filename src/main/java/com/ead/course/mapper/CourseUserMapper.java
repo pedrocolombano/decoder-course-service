@@ -1,6 +1,6 @@
 package com.ead.course.mapper;
 
-import com.ead.course.dto.response.SubscribedUserDTO;
+import com.ead.course.dto.SubscribedUserDTO;
 import com.ead.course.entity.CourseUser;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;

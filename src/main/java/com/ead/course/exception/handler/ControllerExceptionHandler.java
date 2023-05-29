@@ -2,6 +2,7 @@ package com.ead.course.exception.handler;
 
 import com.ead.course.exception.ProxyException;
 import com.ead.course.exception.ResourceNotFoundException;
+import com.ead.course.service.InvalidSubscriptionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +24,13 @@ public class ControllerExceptionHandler {
     public ResponseEntity<StandardError> handleInvalidData(final ProxyException exception,
                                                            final HttpServletRequest request) {
         final HttpStatus badGatewayStatus = HttpStatus.BAD_GATEWAY;
+        return ResponseEntity.status(badGatewayStatus).body(createResponseBody(badGatewayStatus, exception, request));
+    }
+
+    @ExceptionHandler(InvalidSubscriptionException.class)
+    public ResponseEntity<StandardError> handleInvalidSubscription(final InvalidSubscriptionException exception,
+                                                                   final HttpServletRequest request) {
+        final HttpStatus badGatewayStatus = HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(badGatewayStatus).body(createResponseBody(badGatewayStatus, exception, request));
     }
 
