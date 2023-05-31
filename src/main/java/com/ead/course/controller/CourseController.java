@@ -7,6 +7,7 @@ import com.ead.course.mapper.CourseMapper;
 import com.ead.course.service.CourseService;
 import com.ead.course.specification.CourseSpecificationTemplate;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,6 +31,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/courses")
 @AllArgsConstructor
+@Log4j2
 public class CourseController {
 
     private final CourseService courseService;

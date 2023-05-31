@@ -57,11 +57,11 @@ public class UserProxy {
                 + pageable.getPageSize();
     }
 
-    public ResponseEntity<UserDTO> findById(final UUID userId) {
+    public UserDTO findById(final UUID userId) {
         final String url = getUserServiceHost() + "/users/" + userId;
         try {
             log.info("Fetching user by id {}.", userId);
-            return restTemplate.exchange(url, HttpMethod.GET, null, UserDTO.class);
+            return restTemplate.exchange(url, HttpMethod.GET, null, UserDTO.class).getBody();
         } catch (HttpClientErrorException e) {
             if (HttpStatus.NOT_FOUND.value() == e.getRawStatusCode()) {
                 log.error("User {} not found in auth user service.", userId);

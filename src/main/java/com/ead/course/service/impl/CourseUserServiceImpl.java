@@ -58,7 +58,7 @@ public class CourseUserServiceImpl implements CourseUserService {
     }
 
     private void validateUser(final CourseSubscriptionDTO subscriptionDTO) {
-        final UserDTO user = userProxy.findById(subscriptionDTO.getUserId()).getBody();
+        final UserDTO user = userProxy.findById(subscriptionDTO.getUserId());
         validateIfUserIsNotBlocked(user);
     }
 
