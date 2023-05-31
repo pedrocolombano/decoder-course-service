@@ -2,7 +2,7 @@ package com.ead.course.exception.handler;
 
 import com.ead.course.exception.ProxyException;
 import com.ead.course.exception.ResourceNotFoundException;
-import com.ead.course.service.InvalidSubscriptionException;
+import com.ead.course.exception.InvalidSubscriptionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

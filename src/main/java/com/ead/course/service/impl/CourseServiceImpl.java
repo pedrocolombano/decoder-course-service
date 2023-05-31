@@ -10,7 +10,7 @@ import com.ead.course.mapper.CourseMapper;
 import com.ead.course.proxy.UserProxy;
 import com.ead.course.repository.CourseRepository;
 import com.ead.course.service.CourseService;
-import com.ead.course.service.InvalidSubscriptionException;
+import com.ead.course.exception.InvalidSubscriptionException;
 import com.ead.course.service.ModuleService;
 import com.ead.course.specification.CourseSpecificationTemplate;
 import lombok.AllArgsConstructor;

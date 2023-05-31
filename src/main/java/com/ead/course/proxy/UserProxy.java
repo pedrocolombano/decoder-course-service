@@ -5,7 +5,7 @@ import com.ead.course.dto.response.PageResponseDTO;
 import com.ead.course.dto.response.UserDTO;
 import com.ead.course.exception.ProxyException;
 import com.ead.course.exception.ResourceNotFoundException;
-import com.ead.course.service.InvalidSubscriptionException;
+import com.ead.course.exception.InvalidSubscriptionException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.ParameterizedTypeReference;

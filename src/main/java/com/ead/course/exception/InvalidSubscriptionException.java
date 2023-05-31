@@ -1,4 +1,4 @@
-package com.ead.course.service;
+package com.ead.course.exception;
 
 public class InvalidSubscriptionException extends RuntimeException {
 

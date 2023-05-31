@@ -9,7 +9,7 @@ import com.ead.course.proxy.UserProxy;
 import com.ead.course.repository.CourseUserRepository;
 import com.ead.course.service.CourseService;
 import com.ead.course.service.CourseUserService;
-import com.ead.course.service.InvalidSubscriptionException;
+import com.ead.course.exception.InvalidSubscriptionException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
