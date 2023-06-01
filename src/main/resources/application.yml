@@ -32,4 +32,4 @@ eureka:
 ead:
   user:
     service:
-      host: 'http://localhost:8087'
+      host: 'http://ead-user-auth-service'
