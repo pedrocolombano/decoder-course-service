@@ -1,5 +1,7 @@
 server:
   port: 8082
+  servlet:
+    context-path: '/ead-course'
 
 spring:
   application:
@@ -32,4 +34,4 @@ eureka:
 ead:
   user:
     service:
-      host: 'http://ead-user-auth-service'
+      host: 'http://ead-user-auth-service/ead-user-auth'
