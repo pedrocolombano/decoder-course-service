@@ -82,8 +82,7 @@ public class UserProxy {
             if (HttpStatus.NOT_FOUND.value() == e.getRawStatusCode()) {
                 log.error("User {} not found in auth user service.", userId);
                 throw new ResourceNotFoundException("User not found.");
-            }
-            else if (HttpStatus.BAD_REQUEST.value() == e.getRawStatusCode()) {
+            } else if (HttpStatus.BAD_REQUEST.value() == e.getRawStatusCode()) {
                 log.error("User {} is already subscribed into course in auth user service.", userId);
                 throw new InvalidSubscriptionException("User is already subscribed into course.");
             }
@@ -92,4 +91,13 @@ public class UserProxy {
         }
     }
 
+    public void deleteUserCourseSubscriptions(final UUID courseId) {
+        final String url = getUserServiceHost() + "/users/courses/" + courseId;
+        try {
+            restTemplate.exchange(url, HttpMethod.DELETE, null, Void.class);
+        } catch (HttpClientErrorException e) {
+            log.error("Could not delete user subscription into course {}.", courseId);
+            throw new InvalidSubscriptionException("Could not delete user subscription into course");
+        }
+    }
 }

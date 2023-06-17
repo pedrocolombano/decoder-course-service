@@ -5,11 +5,11 @@ import com.ead.course.dto.response.UserDTO;
 import com.ead.course.entity.Course;
 import com.ead.course.entity.CourseUser;
 import com.ead.course.enumerated.UserStatus;
+import com.ead.course.exception.InvalidSubscriptionException;
 import com.ead.course.proxy.UserProxy;
 import com.ead.course.repository.CourseUserRepository;
 import com.ead.course.service.CourseService;
 import com.ead.course.service.CourseUserService;
-import com.ead.course.exception.InvalidSubscriptionException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -74,6 +74,12 @@ public class CourseUserServiceImpl implements CourseUserService {
                 .course(course)
                 .userId(userId)
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void deleteAllByCourseId(final UUID courseId) {
+        courseUserRepository.deleteAllByCourseCourseId(courseId);
     }
 
 }

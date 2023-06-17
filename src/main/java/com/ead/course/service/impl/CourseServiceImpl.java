@@ -11,10 +11,12 @@ import com.ead.course.proxy.UserProxy;
 import com.ead.course.repository.CourseRepository;
 import com.ead.course.service.CourseService;
 import com.ead.course.exception.InvalidSubscriptionException;
+import com.ead.course.service.CourseUserService;
 import com.ead.course.service.ModuleService;
 import com.ead.course.specification.CourseSpecificationTemplate;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +37,10 @@ public class CourseServiceImpl implements CourseService {
     private final UserProxy userProxy;
 
     private final ModuleService moduleService;
+
+    @Lazy
+    private final CourseUserService courseUserService;
+
     private final CourseMapper courseMapper;
 
     private final CourseRepository courseRepository;
@@ -61,7 +67,12 @@ public class CourseServiceImpl implements CourseService {
     public void delete(final UUID courseId) {
         final List<Module> courseModules = moduleService.findAllByCourseId(courseId);
         moduleService.deleteAll(courseModules);
+        courseUserService.deleteAllByCourseId(courseId);
+        deleteCourseById(courseId);
+        userProxy.deleteUserCourseSubscriptions(courseId);
+    }
 
+    private void deleteCourseById(final UUID courseId) {
         try {
             courseRepository.deleteById(courseId);
         } catch (EmptyResultDataAccessException e) {
