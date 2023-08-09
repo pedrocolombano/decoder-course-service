@@ -1,6 +1,7 @@
 package com.ead.course.entity;
 
 
+import com.ead.commonlib.entity.GenericEntity;
 import com.ead.course.entity.enumerated.CourseLevel;
 import com.ead.course.entity.enumerated.CourseStatus;
 import lombok.AllArgsConstructor;
