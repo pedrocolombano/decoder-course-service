@@ -72,6 +72,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.ead</groupId>
+            <artifactId>common-lib</artifactId>
+            <version>DEV</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

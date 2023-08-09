@@ -1,16 +1,16 @@
 package com.ead.course.service.impl;
 
+import com.ead.commonlib.exception.InvalidSubscriptionException;
+import com.ead.commonlib.exception.ResourceNotFoundException;
 import com.ead.course.dto.request.CourseInsertDTO;
 import com.ead.course.dto.response.UserDTO;
 import com.ead.course.entity.Course;
 import com.ead.course.entity.Module;
 import com.ead.course.enumerated.UserType;
-import com.ead.course.exception.ResourceNotFoundException;
 import com.ead.course.mapper.CourseMapper;
 import com.ead.course.proxy.UserProxy;
 import com.ead.course.repository.CourseRepository;
 import com.ead.course.service.CourseService;
-import com.ead.course.exception.InvalidSubscriptionException;
 import com.ead.course.service.CourseUserService;
 import com.ead.course.service.ModuleService;
 import com.ead.course.specification.CourseSpecificationTemplate;

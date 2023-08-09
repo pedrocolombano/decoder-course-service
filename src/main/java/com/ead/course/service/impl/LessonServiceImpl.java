@@ -1,9 +1,9 @@
 package com.ead.course.service.impl;
 
+import com.ead.commonlib.exception.ResourceNotFoundException;
 import com.ead.course.dto.request.LessonInsertDTO;
 import com.ead.course.entity.Lesson;
 import com.ead.course.entity.Module;
-import com.ead.course.exception.ResourceNotFoundException;
 import com.ead.course.mapper.LessonMapper;
 import com.ead.course.repository.LessonRepository;
 import com.ead.course.service.LessonService;

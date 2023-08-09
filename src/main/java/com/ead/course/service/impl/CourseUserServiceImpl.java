@@ -1,11 +1,11 @@
 package com.ead.course.service.impl;
 
+import com.ead.commonlib.exception.InvalidSubscriptionException;
 import com.ead.course.dto.request.CourseSubscriptionDTO;
 import com.ead.course.dto.response.UserDTO;
 import com.ead.course.entity.Course;
 import com.ead.course.entity.CourseUser;
 import com.ead.course.enumerated.UserStatus;
-import com.ead.course.exception.InvalidSubscriptionException;
 import com.ead.course.proxy.UserProxy;
 import com.ead.course.repository.CourseUserRepository;
 import com.ead.course.service.CourseService;
