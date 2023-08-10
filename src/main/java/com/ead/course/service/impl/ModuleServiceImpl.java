@@ -7,11 +7,12 @@ import com.ead.course.entity.Lesson;
 import com.ead.course.entity.Module;
 import com.ead.course.mapper.ModuleMapper;
 import com.ead.course.repository.ModuleRepository;
-import com.ead.course.service.CourseService;
+import com.ead.course.service.CourseFetchService;
 import com.ead.course.service.LessonService;
+import com.ead.course.service.ModuleFetchService;
 import com.ead.course.service.ModuleService;
-import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Lazy;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -23,14 +24,16 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@Log4j2
+@RequiredArgsConstructor
 public class ModuleServiceImpl implements ModuleService {
 
-    @Lazy
-    private final CourseService courseService;
-
-    private final LessonService lessonService;
     private final ModuleMapper moduleMapper;
+
+    private final ModuleFetchService moduleFetchService;
+    private final CourseFetchService courseFetchService;
+    private final LessonService lessonService;
+
     private final ModuleRepository moduleRepository;
 
     @Override
@@ -73,7 +76,7 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     @Transactional
     public Module insert(final UUID courseId, final ModuleInsertDTO moduleInsertDTO) {
-        final Course course = courseService.findById(courseId);
+        final Course course = courseFetchService.findById(courseId);
         final Module moduleToInsert = moduleMapper.fromModuleInsertDto(moduleInsertDTO);
         moduleToInsert.setCourse(course);
 
@@ -105,7 +108,6 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     @Transactional(readOnly = true)
     public Module findById(final UUID moduleId) {
-        return moduleRepository.findById(moduleId)
-                .orElseThrow(() -> new ResourceNotFoundException("Module not found."));
+        return moduleFetchService.findById(moduleId);
     }
 }

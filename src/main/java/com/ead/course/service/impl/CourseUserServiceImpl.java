@@ -8,9 +8,9 @@ import com.ead.course.entity.CourseUser;
 import com.ead.course.enumerated.UserStatus;
 import com.ead.course.proxy.UserProxy;
 import com.ead.course.repository.CourseUserRepository;
-import com.ead.course.service.CourseService;
+import com.ead.course.service.CourseFetchService;
 import com.ead.course.service.CourseUserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,13 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
 @Log4j2
+@RequiredArgsConstructor
 public class CourseUserServiceImpl implements CourseUserService {
 
     private final UserProxy userProxy;
 
-    private final CourseService courseService;
+    private final CourseFetchService courseFetchService;
     private final CourseUserRepository courseUserRepository;
 
     @Override
@@ -39,7 +39,7 @@ public class CourseUserServiceImpl implements CourseUserService {
     public CourseUser subscribeUserIntoCourse(final UUID courseId, final CourseSubscriptionDTO subscriptionDTO) {
         log.info("Starting user {} subscription into course {}.", subscriptionDTO.getUserId(), courseId);
 
-        final Course course = courseService.findById(courseId);
+        final Course course = courseFetchService.findById(courseId);
         validateIfUserIsAlreadySubscribedIntoCourse(course, subscriptionDTO);
         validateUser(subscriptionDTO);
 

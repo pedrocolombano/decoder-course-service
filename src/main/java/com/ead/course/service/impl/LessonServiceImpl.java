@@ -7,9 +7,9 @@ import com.ead.course.entity.Module;
 import com.ead.course.mapper.LessonMapper;
 import com.ead.course.repository.LessonRepository;
 import com.ead.course.service.LessonService;
-import com.ead.course.service.ModuleService;
-import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Lazy;
+import com.ead.course.service.ModuleFetchService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@Log4j2
+@RequiredArgsConstructor
 public class LessonServiceImpl implements LessonService {
 
-    @Lazy
-    private final ModuleService moduleService;
-
     private final LessonMapper lessonMapper;
+
+    private final ModuleFetchService moduleFetchService;
     private final LessonRepository lessonRepository;
 
     @Override
@@ -51,7 +51,7 @@ public class LessonServiceImpl implements LessonService {
     @Override
     @Transactional
     public Lesson insert(final UUID moduleId, final LessonInsertDTO lessonInsertDTO) {
-        final Module module = moduleService.findById(moduleId);
+        final Module module = moduleFetchService.findById(moduleId);
         final Lesson newLesson = lessonMapper.fromLessonInsertDto(lessonInsertDTO);
         newLesson.setModule(module);
 

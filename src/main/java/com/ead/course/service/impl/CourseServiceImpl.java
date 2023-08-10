@@ -10,13 +10,13 @@ import com.ead.course.enumerated.UserType;
 import com.ead.course.mapper.CourseMapper;
 import com.ead.course.proxy.UserProxy;
 import com.ead.course.repository.CourseRepository;
+import com.ead.course.service.CourseFetchService;
 import com.ead.course.service.CourseService;
 import com.ead.course.service.CourseUserService;
 import com.ead.course.service.ModuleService;
 import com.ead.course.specification.CourseSpecificationTemplate;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,19 +30,17 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
 @Log4j2
+@RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
     private final UserProxy userProxy;
 
-    private final ModuleService moduleService;
-
-    @Lazy
-    private final CourseUserService courseUserService;
-
     private final CourseMapper courseMapper;
 
+    private final CourseFetchService courseFetchService;
+    private final ModuleService moduleService;
+    private final CourseUserService courseUserService;
     private final CourseRepository courseRepository;
 
     @Override
@@ -58,8 +56,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional(readOnly = true)
     public Course findById(final UUID courseId) {
-        return courseRepository.findById(courseId)
-                .orElseThrow(() -> new ResourceNotFoundException("Course not found."));
+        return courseFetchService.findById(courseId);
     }
 
     @Override
