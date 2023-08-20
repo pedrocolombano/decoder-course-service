@@ -31,12 +31,6 @@ eureka:
   instance:
     hostname: localhost
 
-ead:
-  user:
-    service:
-      host: 'http://ead-user-auth-service/ead-user-auth'
-
-
 feign:
   client:
     config:
