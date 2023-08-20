@@ -7,8 +7,8 @@ import com.ead.course.dto.response.UserDTO;
 import com.ead.course.entity.Course;
 import com.ead.course.entity.Module;
 import com.ead.course.enumerated.UserType;
+import com.ead.course.feignclients.UserClient;
 import com.ead.course.mapper.CourseMapper;
-import com.ead.course.proxy.UserProxy;
 import com.ead.course.repository.CourseRepository;
 import com.ead.course.service.CourseFetchService;
 import com.ead.course.service.CourseService;
@@ -34,7 +34,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
-    private final UserProxy userProxy;
+    private final UserClient userClient;
 
     private final CourseMapper courseMapper;
 
@@ -66,7 +66,7 @@ public class CourseServiceImpl implements CourseService {
         moduleService.deleteAll(courseModules);
         courseUserService.deleteAllByCourseId(courseId);
         deleteCourseById(courseId);
-        userProxy.deleteUserCourseSubscriptions(courseId);
+        userClient.deleteUserCourseSubscriptions(courseId);
     }
 
     private void deleteCourseById(final UUID courseId) {
@@ -86,7 +86,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     private void validateIfUserIsAbleToBeAnInstructor(final CourseInsertDTO courseInsertDTO) {
-        final UserDTO user = userProxy.findById(courseInsertDTO.getCourseInstructor());
+        final UserDTO user = userClient.findById(courseInsertDTO.getCourseInstructor());
         if (UserType.STUDENT.equals(user.getUserType())) {
             log.info("User {} is not an instructor or admin.", user.getUserId());
             throw new InvalidSubscriptionException("User must be an instructor or admin in order to be a course instructor.");

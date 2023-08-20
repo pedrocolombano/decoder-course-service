@@ -1,12 +1,13 @@
 package com.ead.course.service.impl;
 
 import com.ead.commonlib.exception.InvalidSubscriptionException;
+import com.ead.course.dto.SubscribedUserDTO;
 import com.ead.course.dto.request.CourseSubscriptionDTO;
 import com.ead.course.dto.response.UserDTO;
 import com.ead.course.entity.Course;
 import com.ead.course.entity.CourseUser;
 import com.ead.course.enumerated.UserStatus;
-import com.ead.course.proxy.UserProxy;
+import com.ead.course.feignclients.UserClient;
 import com.ead.course.repository.CourseUserRepository;
 import com.ead.course.service.CourseFetchService;
 import com.ead.course.service.CourseUserService;
@@ -24,14 +25,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CourseUserServiceImpl implements CourseUserService {
 
-    private final UserProxy userProxy;
+    private final UserClient userClient;
 
     private final CourseFetchService courseFetchService;
     private final CourseUserRepository courseUserRepository;
 
     @Override
     public Page<UserDTO> getAllUsersByCourse(final UUID courseId, final Pageable pageable) {
-        return userProxy.getAllUsersByCourse(courseId, pageable);
+        return userClient.getAllUsersByCourse(courseId, pageable);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class CourseUserServiceImpl implements CourseUserService {
         validateIfUserIsAlreadySubscribedIntoCourse(course, subscriptionDTO);
         validateUser(subscriptionDTO);
 
-        userProxy.subscribeUserIntoCourse(subscriptionDTO.getUserId(), courseId);
+        userClient.subscribeUserIntoCourse(subscriptionDTO.getUserId(), new SubscribedUserDTO(courseId, subscriptionDTO.getUserId()));
 
         final CourseUser userToSubscribe = buildCourseUser(course, subscriptionDTO.getUserId());
         return courseUserRepository.save(userToSubscribe);
@@ -58,7 +59,7 @@ public class CourseUserServiceImpl implements CourseUserService {
     }
 
     private void validateUser(final CourseSubscriptionDTO subscriptionDTO) {
-        final UserDTO user = userProxy.findById(subscriptionDTO.getUserId());
+        final UserDTO user = userClient.findById(subscriptionDTO.getUserId());
         validateIfUserIsNotBlocked(user);
     }
 

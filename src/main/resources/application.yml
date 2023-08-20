@@ -35,3 +35,17 @@ ead:
   user:
     service:
       host: 'http://ead-user-auth-service/ead-user-auth'
+
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: basic
+
+logging:
+  level:
+    com:
+      ead:
+        course:
+          feignclients: debug
