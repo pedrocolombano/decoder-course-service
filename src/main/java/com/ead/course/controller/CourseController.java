@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -37,9 +38,10 @@ public class CourseController {
     private final CourseMapper courseMapper;
 
     @GetMapping
-    public ResponseEntity<Page<CourseDTO>> findAll(CourseSpecificationTemplate.CourseSpecification specification,
+    public ResponseEntity<Page<CourseDTO>> findAll(@RequestParam(required = false) UUID userId,
+                                                   CourseSpecificationTemplate.CourseSpecification specification,
                                                    @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        final Page<CourseDTO> courses = courseService.findAll(specification, pageable)
+        final Page<CourseDTO> courses = courseService.findAll(userId, specification, pageable)
                 .map(courseMapper::fromEntity);
         return ResponseEntity.ok(courses);
     }

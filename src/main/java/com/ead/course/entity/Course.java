@@ -20,6 +20,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -65,6 +68,12 @@ public class Course extends GenericEntity implements Serializable {
     @Fetch(FetchMode.SUBSELECT)
     @ToString.Exclude
     private final Set<Module> modules = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "tb_course_users",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private final Set<User> users = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

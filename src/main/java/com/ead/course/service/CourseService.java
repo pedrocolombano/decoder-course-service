@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface CourseService {
 
-    Page<Course> findAll(CourseSpecificationTemplate.CourseSpecification specification, Pageable pageable);
+    Page<Course> findAll(UUID userId, CourseSpecificationTemplate.CourseSpecification specification, Pageable pageable);
     Course findById(UUID courseId);
     void delete(UUID courseId);
     Course insert(CourseInsertDTO courseInsertDTO);
