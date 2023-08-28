@@ -24,6 +24,9 @@ spring:
         show_sql: true
         format_sql: true
 
+  rabbitmq:
+    addresses: ${AMQP_ADDRESS}
+
 eureka:
   client:
     service-url:
