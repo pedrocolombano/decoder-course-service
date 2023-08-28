@@ -27,6 +27,13 @@ spring:
   rabbitmq:
     addresses: ${AMQP_ADDRESS}
 
+ead:
+  broker:
+    exchange:
+      userEvent: ead.userevent
+    queue:
+      userEventQueue: ead.userevent.ms.course
+
 eureka:
   client:
     service-url:

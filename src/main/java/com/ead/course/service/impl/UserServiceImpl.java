@@ -29,4 +29,10 @@ public class UserServiceImpl implements UserService {
         Specification<User> userByCourseSpecification = UserSpecificationTemplate.userByCourseId(courseId).and(specification);
         return userRepository.findAll(userByCourseSpecification, pageable);
     }
+
+    @Override
+    @Transactional
+    public void insertUser(final User user) {
+        userRepository.save(user);
+    }
 }

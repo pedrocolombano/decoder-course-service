@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface UserService {
 
     Page<User> findAllUsersByCourseId(UUID courseId, UserSpecificationTemplate.UserSpecification specification, Pageable pageable);
+    void insertUser(User userEventDTO);
+
 }

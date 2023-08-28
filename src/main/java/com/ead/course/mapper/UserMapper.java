@@ -1,5 +1,6 @@
 package com.ead.course.mapper;
 
+import com.ead.course.dto.rabbitmq.UserEventDTO;
 import com.ead.course.dto.response.UserDTO;
 import com.ead.course.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -14,5 +15,9 @@ public class UserMapper {
 
     public UserDTO from(final User user) {
         return mapper.map(user, UserDTO.class);
+    }
+
+    public User from(final UserEventDTO userEventDTO) {
+        return mapper.map(userEventDTO, User.class);
     }
 }
